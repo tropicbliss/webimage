@@ -61,7 +61,7 @@ impl Args {
     pub fn save_images(&self, image_data: Vec<ImageData>) -> Result<()> {
         let file_stem = self.file_name.file_stem()
             .ok_or_else(|| anyhow!("Failed to extract file stem of `file_name`"))?.to_str()
-            .ok_or_else(|| anyhow!("`file_name` is invalid Unicode"))?;
+            .ok_or_else(|| anyhow!("The file stem of `file_name` is invalid Unicode"))?;
         let file_stem = match file_stem.strip_suffix("-full") {
             Some(x) => x,
             None => file_stem
@@ -89,8 +89,8 @@ impl Args {
 
     pub fn get_image_width(&self, image: &DynamicImage) -> Result<u32> {
         let width = image.dimensions().0;
-        if self.base_width >= width {
-            bail!("The base width cannot be equal or more than the original width of the image")
+        if self.base_width > width {
+            bail!("The base width cannot be more than the original width of the image")
         }
         Ok(width)
     }
