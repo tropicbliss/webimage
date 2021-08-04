@@ -73,7 +73,7 @@ impl Args {
             create_dir_all("resized")?;
             path.push("resized");
         }
-        for image in image_data {
+        let res_vec: Vec<Result<()>> = image_data.into_par_iter().map(|image| {
             let mut path = path.clone();
             let file_name = if image.scaling == 1 {
                 file_stem.to_string()
@@ -83,6 +83,10 @@ impl Args {
             path.push(file_name);
             path.set_extension(file_extension);
             image.image.save(path)?;
+            Ok(())
+        }).collect();
+        for res in res_vec {
+            res?;
         }
         Ok(())
     }
