@@ -60,14 +60,14 @@ impl Args {
 
     pub fn save_images(&self, image_data: Vec<ImageData>) -> Result<()> {
         let file_stem = self.file_name.file_stem()
-            .ok_or_else(|| anyhow!("Failed to extract file stem of `file_name`"))?.to_str()
+            .ok_or_else(|| anyhow!("Failed to extract the file stem of `file_name`"))?.to_str()
             .ok_or_else(|| anyhow!("The file stem of `file_name` is invalid Unicode"))?;
         let file_stem = match file_stem.strip_suffix("-full") {
             Some(x) => x,
             None => file_stem
         };
         let file_extension = self.file_name.extension()
-            .ok_or_else(|| anyhow!("Failed to extract extension of `file_name`"))?;
+            .ok_or_else(|| anyhow!("Failed to extract the extension of `file_name`"))?;
         let mut path = PathBuf::new();
         if self.folder {
             create_dir_all("resized")?;
